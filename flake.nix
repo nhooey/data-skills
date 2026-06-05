@@ -73,20 +73,7 @@
             # sweep skills a source renamed or dropped. Runs the reconcile app
             # from the `skills-devshell/` sub-flake at project scope.
             devshell.startup.install-skills.text = devshellSkills.startup;
-            commands = [
-              {
-                category = "skills";
-                name = "reap-skills";
-                help = "Remove every skill this dev shell installed (one owner)";
-                command = devshellSkills.reap;
-              }
-              {
-                category = "skills";
-                name = "update-skills-devshell";
-                help = "Bump the skills-devshell/ sub-flake lock (the skill set)";
-                command = ''nix flake update --flake "$PRJ_ROOT/skills-devshell" "$@"'';
-              }
-            ];
+            commands = devshellSkills.commands;
           };
 
           treefmt = {
