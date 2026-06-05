@@ -1,5 +1,5 @@
 {
-  description = "agent-skills: Agent skills as a Nix flake — the comparison-tables skill, plus a dev shell that installs git/github + skillspkgs authoring tooling at project scope.";
+  description = "agent-skills: Agent skills as a Nix flake — the comparison-tables skill, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,23 +16,11 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # `flake-skills` is the builder library, not a skill — it turns skill
+    # `agent-skill-flake` is the builder library, not a skill — it turns skill
     # directories into installable flakes and aggregates them.
-    flake-skills = {
-      url = "github:nhooey/flake-skills";
+    agent-skill-flake = {
+      url = "github:nhooey/agent-skill-flake";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Dev-shell-only skill source: skillspkgs' curated `authoring-with-git`
-    # combination (the authoring set — nix, humanizer, anthropic + daymade
-    # skill-creation, superpowers — plus the whole git/GitHub pack). Installs
-    # into the dev shell at project scope; not re-exported as a package.
-    skillspkgs-combinations = {
-      url = "github:nhooey/skillspkgs?dir=sources/combinations";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-skills.follows = "flake-skills";
-      };
     };
   };
 
@@ -40,14 +28,13 @@
     inputs@{
       nixpkgs,
       flake-parts,
-      flake-skills,
+      agent-skill-flake,
       ...
     }:
     let
       # The skills this repo outputs: every skill under ./skills built into
-      # per-skill packages plus the base install/preview apps. The dev-shell
-      # skills are kept separate (see `devShellSkills`).
-      base = flake-skills.lib.mkAllSkillsFlake {
+      # per-skill packages plus the base install/preview apps.
+      base = agent-skill-flake.lib.mkAllSkillsFlake {
         inherit nixpkgs;
         source = {
           owner = "nhooey";
@@ -56,20 +43,12 @@
         packagePrefix = "agent-skill-";
       };
 
-      # The dev shell's full skill set as one combination: this repo's own
-      # skills (dogfooded) plus skillspkgs' `authoring-with-git` combination
-      # (authoring tooling + the whole git/GitHub pack) spliced in as a source.
-      # One reconcile hook converges the union under one owner.
-      devShellSkills = flake-skills.lib.mkCombination {
-        inherit nixpkgs;
-        systems = import inputs.systems;
-        name = "agent-skills-devshell";
-        packagePrefix = "agent-skill-";
-        sources = [
-          { source = base; }
-          { source = inputs.skillspkgs-combinations.combinations.authoring-with-git; }
-        ];
-      };
+      # Root-side wiring for the `skills-devshell/` sub-flake: the dev-shell
+      # skill set (skillspkgs' authoring-with-git combination) is defined in
+      # the isolated `skills-devshell/` sub-flake and invoked here at RUNTIME
+      # (not a root input), so this flake keeps zero skill inputs and never
+      # drags the skill mesh into its lock.
+      devshellSkills = agent-skill-flake.lib.devshellSkillsHook { };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
@@ -91,9 +70,23 @@
               Run {bold}menu{reset} to list available commands.
             '';
             # Declarative convergence: install missing, update changed, and
-            # sweep skills a source renamed or dropped — a pure function of
-            # the flake inputs, owned by a single combined installer.
-            devshell.startup.install-skills.text = devShellSkills.reconcileScript system;
+            # sweep skills a source renamed or dropped. Runs the reconcile app
+            # from the `skills-devshell/` sub-flake at project scope.
+            devshell.startup.install-skills.text = devshellSkills.startup;
+            commands = [
+              {
+                category = "skills";
+                name = "reap-skills";
+                help = "Remove every skill this dev shell installed (one owner)";
+                command = devshellSkills.reap;
+              }
+              {
+                category = "skills";
+                name = "update-skills-devshell";
+                help = "Bump the skills-devshell/ sub-flake lock (the skill set)";
+                command = ''nix flake update --flake "$PRJ_ROOT/skills-devshell" "$@"'';
+              }
+            ];
           };
 
           treefmt = {

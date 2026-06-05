@@ -4,7 +4,7 @@
 
 A Nix flake packaging the [`comparison-tables`](skills/comparison-tables/SKILL.md) [Agent Skill](https://www.anthropic.com/engineering/agent-skills) — guidance for writing scannable Markdown comparison tables — plus a dev shell that installs a curated skill-authoring toolkit at project scope.
 
-Skills are built and installed with [`flake-skills`](https://github.com/nhooey/flake-skills).
+Skills are built and installed with [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake).
 
 ## The skill
 
@@ -24,7 +24,7 @@ nix run github:nhooey/agent-skills#preview   -- --scope=personal
 nix run github:nhooey/agent-skills#uninstall -- --scope=personal
 ```
 
-`--scope` is required on every invocation; see the [`flake-skills` install-scope docs](https://github.com/nhooey/flake-skills#install-scope) for the resolver semantics.
+`--scope` is required on every invocation; see the [`agent-skill-flake` install-scope docs](https://github.com/nhooey/agent-skill-flake#install-scope) for the resolver semantics.
 
 ## Dev shell
 
