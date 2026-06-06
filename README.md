@@ -1,8 +1,8 @@
-# agent-skills
+# data-skills
 
-[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fnhooey%2Fagent-skills)](https://garnix.io/repo/nhooey/agent-skills)
+[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fnhooey%2Fdata-skills)](https://garnix.io/repo/nhooey/data-skills)
 
-A Nix flake packaging the [`comparison-tables`](skills/comparison-tables/SKILL.md) [Agent Skill](https://www.anthropic.com/engineering/agent-skills) — guidance for writing scannable Markdown comparison tables — plus a dev shell that installs a curated skill-authoring toolkit at project scope.
+A Nix flake packaging the [`comparison-tables`](skills/comparison-tables/SKILL.md) [Agent Skill](https://www.anthropic.com/engineering/data-skills) — guidance for writing scannable Markdown comparison tables — plus a dev shell that installs a curated skill-authoring toolkit at project scope.
 
 Skills are built and installed with [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake).
 
@@ -14,14 +14,14 @@ Skills are built and installed with [`agent-skill-flake`](https://github.com/nho
 
 ```sh
 # install comparison-tables at personal scope (~/.claude/skills/)
-nix run github:nhooey/agent-skills#install -- --scope=personal
+nix run github:nhooey/data-skills#install -- --scope=personal
 
 # or at project scope (<repo-root>/.claude/skills/)
-nix run github:nhooey/agent-skills#install -- --scope=project
+nix run github:nhooey/data-skills#install -- --scope=project
 
 # preview / remove
-nix run github:nhooey/agent-skills#preview   -- --scope=personal
-nix run github:nhooey/agent-skills#uninstall -- --scope=personal
+nix run github:nhooey/data-skills#preview   -- --scope=personal
+nix run github:nhooey/data-skills#uninstall -- --scope=personal
 ```
 
 `--scope` is required on every invocation; see the [`agent-skill-flake` install-scope docs](https://github.com/nhooey/agent-skill-flake#install-scope) for the resolver semantics.

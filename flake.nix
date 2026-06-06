@@ -1,5 +1,5 @@
 {
-  description = "agent-skills: Agent skills as a Nix flake — the comparison-tables skill, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
+  description = "data-skills: Agent skills as a Nix flake — the comparison-tables skill, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -64,9 +64,9 @@
           apps = base.apps.${system};
 
           devshells.default = {
-            name = "agent-skills";
+            name = "data-skills";
             motd = ''
-              {bold}{14}🚀 Entering agent-skills dev shell{reset}
+              {bold}{14}🚀 Entering data-skills dev shell{reset}
               Run {bold}menu{reset} to list available commands.
             '';
             # Declarative convergence: install missing, update changed, and
