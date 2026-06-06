@@ -1,5 +1,5 @@
 ---
-name: comparison-tables
+name: data-comparison-tables
 description: Use when writing or updating a Markdown document that compares two or more concrete things (products, libraries, services, frameworks, tools, plans, options) for a reader deciding between them — blog posts, README "alternatives" sections, decision docs, wikis, buyer's guides, "X vs Y" sections.
 ---
 
