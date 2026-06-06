@@ -1,5 +1,5 @@
 {
-  description = "data-skills: Agent skills as a Nix flake — the comparison-tables skill, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
+  description = "data-skills: Agent skills as a Nix flake — the data-comparison-tables skill, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -40,6 +40,12 @@
         };
         skillsDir = ./skills;
         packagePrefix = "agent-skill-";
+        # Each skill dir already carries the `data-` topic prefix
+        # (e.g. `data-comparison-tables`), so per-skill keys read
+        # `agent-skill-nhooey-data-<name>`. The aggregate key derives from the
+        # owner namespace alone, so name it explicitly to match the sibling
+        # repos' `agent-skills-nhooey-<topic>-all` convention.
+        name = "agent-skills-nhooey-data-all";
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
