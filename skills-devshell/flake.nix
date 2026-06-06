@@ -1,5 +1,5 @@
 {
-  description = "agent-skills dev-shell skill set — an isolated sub-flake invoked at RUNTIME by the root devShell, never a root input. The skill sources (skillspkgs' authoring-with-git combination) live only in THIS flake's lock, so the root agent-skills stays a leaf with zero skill inputs and transitive consumers never drag the skill mesh in.";
+  description = "data-skills dev-shell skill set — an isolated sub-flake invoked at RUNTIME by the root devShell, never a root input. The skill sources (skillspkgs' authoring-with-git combination) live only in THIS flake's lock, so the root data-skills stays a leaf with zero skill inputs and transitive consumers never drag the skill mesh in.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -36,8 +36,8 @@
     agent-skill-flake.lib.mkDevshellSkillsFlake {
       inherit nixpkgs;
       systems = import inputs.systems;
-      name = "agent-skills-devshell";
-      envName = "agent-skills-agent-skills-devshell";
+      name = "data-skills-devshell";
+      envName = "data-skills-data-skills-devshell";
       packagePrefix = "agent-skill-";
       sources = [
         { source = skillspkgs-combinations.combinations.authoring-with-git; }
