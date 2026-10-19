@@ -1,7 +1,5 @@
 # data-skills
 
-[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fnhooey%2Fdata-skills)](https://garnix.io/repo/nhooey/data-skills)
-
 A Nix flake packaging the [`comparison-tables`](skills/comparison-tables/SKILL.md) [Agent Skill](https://www.anthropic.com/engineering/data-skills) — guidance for writing scannable Markdown comparison tables — plus a dev shell that installs a curated skill-authoring toolkit at project scope.
 
 Skills are built and installed with [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake).
