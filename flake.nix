@@ -60,9 +60,8 @@
         inputs.treefmt-nix.flakeModule
       ];
 
-      # data-skills keeps the stock banner; omitting `motd` lets the module
-      # regenerate the identical "🚀 Entering data-skills dev shell …" text
-      # from `name`.
+      # With no `motd` set, the module builds the banner
+      # "🚀 Entering data-skills dev shell …" from `name`.
       agent-skill-flake.devshellSkills.name = "data-skills";
 
       perSystem =
