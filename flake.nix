@@ -66,10 +66,19 @@
       agent-skill-flake.devshellSkills.name = "data-skills";
 
       perSystem =
-        { system, ... }:
+        { system, pkgs, ... }:
         {
           packages = base.packages.${system};
           apps = base.apps.${system};
+
+          checks = {
+            # Building the aggregate builds every skill package.
+            skills = base.packages.${system}.agent-skills-nhooey-data-all;
+            skill-frontmatter = pkgs.runCommand "skill-frontmatter" { } ''
+              ${pkgs.bash}/bin/bash ${./checks/skill-frontmatter.sh} ${./skills}
+              touch $out
+            '';
+          };
 
           # The devshellSkills module (imported above) supplies this devShell's
           # name, motd, the install-skills startup, the ci/dev/maintenance
