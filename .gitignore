@@ -10,5 +10,9 @@
 # Git worktrees per the using-git-worktrees skill
 /.worktrees/
 
-# Skills installed at project scope by `nix develop`
-/.claude/skills/
+# Project-scope skill installs from `nix develop`'s startup hooks; the
+# skills' preferences files beside them are the project's own. The
+# `.claude/skills` entry is a symlink, so it has no trailing slash.
+/.agents/skills/*
+!/.agents/skills/*.preferences.md
+/.claude/skills
