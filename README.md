@@ -32,6 +32,7 @@ The shell's commands:
 
 - `check`: run `nix flake check`, which formats through treefmt, builds every skill, and checks each `SKILL.md`'s frontmatter `name` and `description`.
 - `fmt`: format the tree with treefmt.
+- `skills-dev`: this repository's own tool, in [`scripts/skills-dev.sh`](scripts/skills-dev.sh). `skills-dev build` builds every skill, or the ones named; `skills-dev lint` checks each `SKILL.md`'s frontmatter; `skills-dev test` runs the bats tests under `tests/`. `skills-dev --help` lists its commands and options.
 - `update-flake`: update `flake.lock`.
 - `update-skills-devshell`: update the `skills-devshell/` sub-flake's lock.
 - `reap-skills`: remove every skill the dev shell installed.

@@ -7,11 +7,15 @@ skill is a directory under `skills/` holding its `SKILL.md`.
 ## Build and test
 
 - `nix develop`: enter the dev shell, which installs the skills it uses
-  into `.agents/skills/` from the `skills-devshell/` sub-flake.
-- `nix build .#agent-skills-nhooey-data-all`: build every skill.
-- `nix flake check`: run the checks, formatting through treefmt among
-  them. It must pass before a change merges.
-- `nix fmt`: format the tree.
-- `checks/` holds the scripts `nix flake check` runs on the skills, and
-  `tests/` their bats tests, which run in the same `nix flake check`.
-  Run one suite on its own with `nix shell nixpkgs#bats -c bats tests/`.
+  into `.agents/skills/` from the `skills-devshell/` sub-flake. The
+  commands below are on its `PATH`; `menu` lists them.
+- `check`: run `nix flake check`, formatting through treefmt among the
+  checks. It must pass before a change merges.
+- `fmt`: format the tree.
+- `skills-dev`: this repository's own tool; `skills-dev --help` lists
+  its commands. `skills-dev build` builds every skill, or the ones named;
+  `skills-dev lint` checks each `SKILL.md`'s frontmatter; `skills-dev
+  test` runs the bats tests under `tests/` on the working tree.
+- `checks/` holds the scripts `nix flake check` runs on the skills,
+  `scripts/` the `skills-dev` tool, and `tests/` the bats tests for both,
+  which run in the same `nix flake check`.
