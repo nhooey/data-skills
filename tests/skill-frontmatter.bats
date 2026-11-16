@@ -88,6 +88,45 @@ description:
   [[ $output == *"empty-description: frontmatter has no description"* ]]
 }
 
+@test "passes a block-scalar description with text under it" {
+  write_skill block-description "---
+name: block-description
+description: |
+  Does one thing well,
+  over two lines.
+---
+"
+  run bash "$check" "$skills"
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
+@test "passes a description on the lines under its key" {
+  write_skill next-line-description "---
+name: next-line-description
+description:
+  Does one thing well.
+---
+"
+  run bash "$check" "$skills"
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
+@test "fails when a block-scalar description has no text" {
+  for indicator in '|' '>' '|-' '>+'; do
+    write_skill empty-block "---
+name: empty-block
+description: $indicator
+metadata: x
+---
+"
+    run bash "$check" "$skills"
+    [ "$status" -eq 1 ]
+    [[ $output == *"empty-block: frontmatter has no description"* ]]
+  done
+}
+
 @test "reads name and description only from the frontmatter, not the body" {
   write_skill body-only "---
 title: Body only
