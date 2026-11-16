@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Fail unless every skills/<dir>/SKILL.md opens with YAML frontmatter,
 # closed by a second `---` line, whose `name` equals <dir> and whose
-# `description` is non-empty.
+# `description` is non-empty. A directory with no skills passes.
 set -euo pipefail
+shopt -s nullglob
 
 skills_dir=$1
 status=0
