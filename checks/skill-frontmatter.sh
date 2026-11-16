@@ -23,12 +23,22 @@ for skill in "$skills_dir"/*/; do
   fi
   frontmatter=$(awk 'NR == 1 && $0 != "---" { exit } NR > 1 && $0 == "---" { exit } NR > 1 { print }' "$file")
   name=$(sed -n 's/^name:[[:space:]]*//p' <<<"$frontmatter")
-  description=$(sed -n 's/^description:[[:space:]]*//p' <<<"$frontmatter")
+  # The description's text: what follows its key, or for a block scalar
+  # (`|`, `>`, `|-`, ...) or an empty value, the indented lines under it.
+  description=$(awk '
+    in_description { if (/^[[:space:]]/ || /^$/) { print; next } exit }
+    /^description:/ {
+      value = $0
+      sub(/^description:[[:space:]]*/, "", value)
+      if (value !~ /^[|>][-+0-9]*[[:space:]]*$/) print value
+      in_description = 1
+    }
+  ' <<<"$frontmatter")
   if [[ $name != "$dir" ]]; then
     echo "$dir: frontmatter name is '$name', not '$dir'" >&2
     status=1
   fi
-  if [[ -z $description ]]; then
+  if [[ -z ${description//[[:space:]]/} ]]; then
     echo "$dir: frontmatter has no description" >&2
     status=1
   fi
