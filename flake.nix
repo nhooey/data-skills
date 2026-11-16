@@ -77,6 +77,18 @@
               ${pkgs.bash}/bin/bash ${./checks/skill-frontmatter.sh} ${./skills}
               touch $out
             '';
+            # The tests for that check, run on fixture skills.
+            skill-frontmatter-tests =
+              pkgs.runCommand "skill-frontmatter-tests"
+                {
+                  nativeBuildInputs = [ pkgs.bats ];
+                  SKILL_FRONTMATTER = ./checks/skill-frontmatter.sh;
+                  SKILLS_DIR = ./skills;
+                }
+                ''
+                  bats ${./tests}
+                  touch $out
+                '';
           };
 
           # The devshellSkills module (imported above) supplies this devShell's
