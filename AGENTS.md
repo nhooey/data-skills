@@ -2,7 +2,9 @@
 
 Agent skills for working with data, packaged as a Nix flake with
 [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake). Each
-skill is a directory under `skills/` holding its `SKILL.md`.
+skill is a directory under `skills/` holding its `SKILL.md`. `skills/`
+holds none for now; its `.gitkeep` keeps the directory in the flake
+source.
 
 ## Build and test
 
