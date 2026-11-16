@@ -1,17 +1,26 @@
 # data-skills
 
-A Nix flake packaging the [`data-comparison-tables`](skills/data-comparison-tables/SKILL.md) [Agent Skill](https://www.anthropic.com/engineering/agent-skills) — guidance for writing scannable Markdown comparison tables — plus a dev shell that installs a curated skill-authoring toolkit at project scope.
+A Nix flake for [Agent Skills](https://www.anthropic.com/engineering/agent-skills) about handling data honestly: figures that come from queries, comparisons that are measured, ad-hoc questions answered in DuckDB, and prices that carry a source and a date. It also has a dev shell that installs a curated skill-authoring toolkit at project scope.
 
 Skills are built and installed with [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake).
 
-## The skill
+## The skills
 
-- **`data-comparison-tables`** — when writing a Markdown document that compares two or more concrete things (products, libraries, services, frameworks, …), shape it as a table a reader can scan in seconds: items in rows, properties in columns, binary values as ✅/❌, hyperlinked names, and uniform properties pulled out into a list beneath.
+| Skill                                                                                                | What it does                                                                                                           |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`data-hygiene-figures-from-queries`](skills/data-hygiene-figures-from-queries/SKILL.md)             | Every count, sum, rate or percentage comes from a command run on the data, named in the reply with the data's time.    |
+| [`data-hygiene-measure-before-concluding`](skills/data-hygiene-measure-before-concluding/SKILL.md)   | Warm-up, repeated runs, median and spread before claiming one option is faster, smaller or cheaper.                    |
+| [`data-workflow-query-with-duckdb`](skills/data-workflow-query-with-duckdb/SKILL.md)                 | Answer ad-hoc questions about CSV, JSON, NDJSON or Parquet files with one DuckDB query, shown with its answer.         |
+| [`data-hygiene-dated-sourced-prices`](skills/data-hygiene-dated-sourced-prices/SKILL.md)             | Each price, spec or availability carries its source link, ISO currency code and date read; stale entries are marked.   |
+
+Comparison tables are covered by [`writing-hygiene-tables-for-comparison`](https://github.com/nhooey/writing-skills), for when and what to compare, and [`markdown-hygiene-lists-headings-tables`](https://github.com/nhooey/document-skills), for the table's layout.
+
+Package outputs: `agent-skills-nhooey-data-all`, the aggregate of every skill, and `agent-skill-nhooey-<skill>` for each skill above.
 
 ## Install
 
 ```sh
-# install data-comparison-tables at personal scope (~/.claude/skills/)
+# install this repository's skills at personal scope (~/.claude/skills/)
 nix run github:nhooey/data-skills#install -- --scope=personal
 
 # or at project scope (<repo-root>/.claude/skills/)
@@ -26,7 +35,7 @@ nix run github:nhooey/data-skills#uninstall -- --scope=personal
 
 ## Dev shell
 
-`nix develop` installs the skills used to work on this repo, at project scope, into `<repo-root>/.agents/skills/`, with `.claude/skills` a symlink to it. The set comes from the `skills-devshell/` sub-flake: skillspkgs' [`authoring-with-git`](https://github.com/nhooey/skillspkgs) combination (nix, humanizer, skill-creation, superpowers and the whole git/GitHub pack), [`shell-skills`](https://github.com/nhooey/shell-skills), and three skills from [`coding-agent-skills`](https://github.com/nhooey/coding-agent-skills). This repo's own `data-comparison-tables` isn't among them. The set is converged on shell entry: missing skills are installed, changed ones updated, and renamed or dropped ones swept.
+`nix develop` installs the skills used to work on this repo, at project scope, into `<repo-root>/.agents/skills/`, with `.claude/skills` a symlink to it. The set comes from the `skills-devshell/` sub-flake: skillspkgs' [`authoring-with-git`](https://github.com/nhooey/skillspkgs) combination (nix, humanizer, skill-creation, superpowers and the whole git/GitHub pack), [`shell-skills`](https://github.com/nhooey/shell-skills), and three skills from [`coding-agent-skills`](https://github.com/nhooey/coding-agent-skills). The set is converged on shell entry: missing skills are installed, changed ones updated, and renamed or dropped ones swept.
 
 The shell's commands:
 

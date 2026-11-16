@@ -2,7 +2,17 @@
 
 Agent skills for working with data, packaged as a Nix flake with
 [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake). Each
-skill is a directory under `skills/` holding its `SKILL.md`.
+skill is a directory under `skills/` holding its `SKILL.md`, and the
+flake builds every one it finds there:
+
+- `data-hygiene-figures-from-queries`: every figure stated comes from a
+  command run on the data, named with the time of its data.
+- `data-hygiene-measure-before-concluding`: repeated runs, a median and
+  a spread before claiming one option beats another.
+- `data-workflow-query-with-duckdb`: ad-hoc questions about data files go
+  through one DuckDB query.
+- `data-hygiene-dated-sourced-prices`: prices and specs carry a source,
+  an ISO currency code and the date read.
 
 ## Build and test
 

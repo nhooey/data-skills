@@ -40,6 +40,12 @@ description: Does one thing well.
   [ "$status" -eq 0 ]
 }
 
+@test "passes a skills directory with no skills" {
+  run bash "$check" "$skills"
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
 @test "fails when the frontmatter name differs from the directory" {
   write_skill right-name "---
 name: wrong-name
