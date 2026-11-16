@@ -1,12 +1,21 @@
 # data-skills
 
-A Nix flake for [Agent Skills](https://www.anthropic.com/engineering/agent-skills) about working with data, plus a dev shell that installs a curated skill-authoring toolkit at project scope.
+A Nix flake for [Agent Skills](https://www.anthropic.com/engineering/agent-skills) about handling data honestly: figures that come from queries, comparisons that are measured, ad-hoc questions answered in DuckDB, and prices that carry a source and a date. It also has a dev shell that installs a curated skill-authoring toolkit at project scope.
 
 Skills are built and installed with [`agent-skill-flake`](https://github.com/nhooey/agent-skill-flake).
 
 ## The skills
 
-This repository holds no skills for now: `skills/` is empty, and the flake builds an empty skill set. Comparison tables are covered by [`writing-hygiene-tables-for-comparison`](https://github.com/nhooey/writing-skills), for when and what to compare, and [`markdown-hygiene-lists-headings-tables`](https://github.com/nhooey/document-skills), for the table's layout.
+| Skill                                                                                                | What it does                                                                                                           |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`data-hygiene-figures-from-queries`](skills/data-hygiene-figures-from-queries/SKILL.md)             | Every count, sum, rate or percentage comes from a command run on the data, named in the reply with the data's time.    |
+| [`data-hygiene-measure-before-concluding`](skills/data-hygiene-measure-before-concluding/SKILL.md)   | Warm-up, repeated runs, median and spread before claiming one option is faster, smaller or cheaper.                    |
+| [`data-workflow-query-with-duckdb`](skills/data-workflow-query-with-duckdb/SKILL.md)                 | Answer ad-hoc questions about CSV, JSON, NDJSON or Parquet files with one DuckDB query, shown with its answer.         |
+| [`data-hygiene-dated-sourced-prices`](skills/data-hygiene-dated-sourced-prices/SKILL.md)             | Each price, spec or availability carries its source link, ISO currency code and date read; stale entries are marked.   |
+
+Comparison tables are covered by [`writing-hygiene-tables-for-comparison`](https://github.com/nhooey/writing-skills), for when and what to compare, and [`markdown-hygiene-lists-headings-tables`](https://github.com/nhooey/document-skills), for the table's layout.
+
+Package outputs: `agent-skills-nhooey-data-all`, the aggregate of every skill, and `agent-skill-nhooey-<skill>` for each skill above.
 
 ## Install
 

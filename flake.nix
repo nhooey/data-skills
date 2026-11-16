@@ -1,5 +1,5 @@
 {
-  description = "data-skills: Agent skills for working with data as a Nix flake, holding no skills for now, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
+  description = "data-skills: Agent skills for handling data honestly (figures from queries, measuring before concluding, DuckDB for ad-hoc queries, dated and sourced prices) as a Nix flake, plus a dev shell that installs the skillspkgs authoring tooling at project scope.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -32,9 +32,7 @@
     }:
     let
       # The skills this repo outputs: every skill under ./skills built into
-      # per-skill packages plus the base install/preview apps. ./skills
-      # holds none for now; its `.gitkeep` keeps the directory in the flake
-      # source, and the aggregate builds as an empty skill set.
+      # per-skill packages plus the base install/preview apps.
       base = agent-skill-flake.lib.mkAllSkillsFlake {
         inherit nixpkgs;
         source = {
@@ -43,7 +41,7 @@
         skillsDir = ./skills;
         packagePrefix = "agent-skill-";
         # Each skill dir carries the `data-` topic prefix
-        # (e.g. `data-<name>`), so per-skill keys read
+        # (e.g. `data-hygiene-figures-from-queries`), so per-skill keys read
         # `agent-skill-nhooey-data-<name>`. The aggregate key derives from the
         # owner namespace alone, so name it explicitly to match the sibling
         # repos' `agent-skills-nhooey-<topic>-all` convention.
