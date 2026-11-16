@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Fail unless every skills/<dir>/SKILL.md opens with YAML frontmatter
-# whose `name` equals <dir> and whose `description` is non-empty.
+# Fail unless every skills/<dir>/SKILL.md opens with YAML frontmatter,
+# closed by a second `---` line, whose `name` equals <dir> and whose
+# `description` is non-empty.
 set -euo pipefail
 
 skills_dir=$1
@@ -11,6 +12,11 @@ for skill in "$skills_dir"/*/; do
   file="$skill/SKILL.md"
   if [[ ! -f $file ]]; then
     echo "$dir: no SKILL.md" >&2
+    status=1
+    continue
+  fi
+  if ! awk 'NR == 1 && $0 != "---" { exit 1 } NR > 1 && $0 == "---" { closed = 1; exit } END { exit !closed }' "$file"; then
+    echo "$dir: SKILL.md has no frontmatter closed by a '---' line" >&2
     status=1
     continue
   fi
