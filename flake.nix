@@ -66,6 +66,20 @@
 
       perSystem =
         { system, pkgs, ... }:
+        let
+          # The repository's own commands as one tool: a dev shell command,
+          # and the tool its bats tests run in `nix flake check`.
+          skills-dev = pkgs.writeShellApplication {
+            name = "skills-dev";
+            runtimeInputs = with pkgs; [
+              bash
+              bats
+              git
+              gnused
+            ];
+            text = builtins.readFile ./scripts/skills-dev.sh;
+          };
+        in
         {
           packages = base.packages.${system};
           apps = base.apps.${system};
@@ -77,13 +91,14 @@
               ${pkgs.bash}/bin/bash ${./checks/skill-frontmatter.sh} ${./skills}
               touch $out
             '';
-            # The tests for that check, run on fixture skills.
-            skill-frontmatter-tests =
-              pkgs.runCommand "skill-frontmatter-tests"
+            # The bats tests: that check's on fixture skills, and skills-dev's.
+            tests =
+              pkgs.runCommand "tests"
                 {
                   nativeBuildInputs = [ pkgs.bats ];
                   SKILL_FRONTMATTER = ./checks/skill-frontmatter.sh;
                   SKILLS_DIR = ./skills;
+                  SKILLS_DEV = pkgs.lib.getExe skills-dev;
                 }
                 ''
                   bats ${./tests}
@@ -93,9 +108,16 @@
 
           # The devshellSkills module (imported above) supplies this devShell's
           # name, motd, the install-skills startup, the ci/dev/maintenance
-          # command trio, and the skills commands. data-skills adds nothing
-          # repo-specific here.
-          devshells.default = { };
+          # command trio, and the skills commands. data-skills adds its own
+          # tool, skills-dev.
+          devshells.default.commands = [
+            {
+              category = "dev";
+              name = "skills-dev";
+              help = "build: build skills; lint: check SKILL.md frontmatter; test: run the bats tests";
+              package = skills-dev;
+            }
+          ];
 
           treefmt = {
             projectRootFile = "flake.nix";
