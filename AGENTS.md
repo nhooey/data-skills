@@ -12,3 +12,6 @@ skill is a directory under `skills/` holding its `SKILL.md`.
 - `nix flake check`: run the checks, formatting through treefmt among
   them. It must pass before a change merges.
 - `nix fmt`: format the tree.
+- `checks/` holds the scripts `nix flake check` runs on the skills, and
+  `tests/` their bats tests, which run in the same `nix flake check`.
+  Run one suite on its own with `nix shell nixpkgs#bats -c bats tests/`.
