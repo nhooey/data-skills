@@ -8,6 +8,17 @@ shopt -s nullglob
 skills_dir=$1
 status=0
 
+# scalar <value>: a one-line YAML value without its trailing spaces and
+# without the quotes around it, if any.
+scalar() {
+  local value=$1
+  value=${value%"${value##*[![:space:]]}"}
+  if [[ $value =~ ^\"(.*)\"$ || $value =~ ^\'(.*)\'$ ]]; then
+    value=${BASH_REMATCH[1]}
+  fi
+  printf '%s' "$value"
+}
+
 for skill in "$skills_dir"/*/; do
   dir=$(basename "$skill")
   file="$skill/SKILL.md"
@@ -22,7 +33,7 @@ for skill in "$skills_dir"/*/; do
     continue
   fi
   frontmatter=$(awk 'NR == 1 && $0 != "---" { exit } NR > 1 && $0 == "---" { exit } NR > 1 { print }' "$file")
-  name=$(sed -n 's/^name:[[:space:]]*//p' <<<"$frontmatter")
+  name=$(scalar "$(sed -n 's/^name:[[:space:]]*//p' <<<"$frontmatter")")
   # The description's text: what follows its key, or for a block scalar
   # (`|`, `>`, `|-`, ...) or an empty value, the indented lines under it.
   description=$(awk '
@@ -34,6 +45,7 @@ for skill in "$skills_dir"/*/; do
       in_description = 1
     }
   ' <<<"$frontmatter")
+  description=$(scalar "$description")
   if [[ $name != "$dir" ]]; then
     echo "$dir: frontmatter name is '$name', not '$dir'" >&2
     status=1
