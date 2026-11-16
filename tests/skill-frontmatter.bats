@@ -57,6 +57,38 @@ description: Does one thing well.
   [[ $output == *"right-name: frontmatter name is 'wrong-name', not 'right-name'"* ]]
 }
 
+@test "passes a quoted name, or one with trailing spaces" {
+  write_skill double-quoted '---
+name: "double-quoted"
+description: Does one thing well.
+---
+'
+  write_skill single-quoted "---
+name: 'single-quoted'
+description: Does one thing well.
+---
+"
+  write_skill trailing-space "---
+name: trailing-space
+description: Does one thing well.
+---
+"
+  run bash "$check" "$skills"
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
+@test "fails when the description is an empty quoted string" {
+  write_skill quoted-empty '---
+name: quoted-empty
+description: ""
+---
+'
+  run bash "$check" "$skills"
+  [ "$status" -eq 1 ]
+  [[ $output == *"quoted-empty: frontmatter has no description"* ]]
+}
+
 @test "fails when the frontmatter has no name" {
   write_skill nameless "---
 description: Does one thing well.
