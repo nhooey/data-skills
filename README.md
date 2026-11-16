@@ -39,7 +39,7 @@ nix run github:nhooey/data-skills#uninstall -- --scope=personal
 
 The shell's commands:
 
-- `check`: run `nix flake check`, which formats through treefmt, builds every skill, and checks each `SKILL.md`'s frontmatter `name` and `description`.
+- `check`: run `nix flake check`, which checks formatting through treefmt, builds every skill, checks each `SKILL.md`'s frontmatter `name` and `description`, and runs the bats tests under `tests/`.
 - `fmt`: format the tree with treefmt.
 - `skills-dev`: this repository's own tool, in [`scripts/skills-dev.sh`](scripts/skills-dev.sh). `skills-dev build` builds every skill, or the ones named; `skills-dev lint` checks each `SKILL.md`'s frontmatter; `skills-dev test` runs the bats tests under `tests/`. `skills-dev --help` lists its commands and options.
 - `update-flake`: update `flake.lock`.
