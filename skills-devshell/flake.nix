@@ -15,21 +15,21 @@
 
     # Skill sources from the nhooey skill repositories.
     coding-agent-skills = {
-      url = "github:nhooey/coding-agent-skills/overnight-skills";
+      url = "github:nhooey/coding-agent-skills";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     git-skills = {
-      url = "github:nhooey/git-skills/overnight-skills";
+      url = "github:nhooey/git-skills";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.agent-skill-flake.follows = "agent-skill-flake";
     };
     nix-skills = {
-      url = "github:nhooey/nix-skills/overnight-skills";
+      url = "github:nhooey/nix-skills";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.agent-skill-flake.follows = "agent-skill-flake";
     };
     shell-skills = {
-      url = "github:nhooey/shell-skills/overnight-skills";
+      url = "github:nhooey/shell-skills";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
