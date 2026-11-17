@@ -33,6 +33,28 @@ description: Does one thing well.
   [ -z "$output" ]
 }
 
+@test "reads a quoted name with a trailing comment as YAML" {
+  write_skill quoted-name '---
+name: "quoted-name" # the skill
+description: Does one thing well.
+---
+'
+  run bash "$check" "$skills"
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
+@test "fails when the frontmatter isn't valid YAML" {
+  write_skill bad-yaml '---
+name: bad-yaml
+description: "unclosed
+---
+'
+  run bash "$check" "$skills"
+  [ "$status" -eq 1 ]
+  [[ $output == *"bad-yaml: SKILL.md frontmatter is not valid YAML"* ]]
+}
+
 @test "passes several valid skills" {
   valid_skill first-skill
   valid_skill second-skill

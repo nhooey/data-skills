@@ -21,9 +21,14 @@ for skill in "$skills_dir"/*/; do
     status=1
     continue
   fi
-  frontmatter=$(awk 'NR == 1 && $0 != "---" { exit } NR > 1 && $0 == "---" { exit } NR > 1 { print }' "$file")
-  name=$(sed -n 's/^name:[[:space:]]*//p' <<<"$frontmatter")
-  description=$(sed -n 's/^description:[[:space:]]*//p' <<<"$frontmatter")
+  # yq's front-matter mode reads the values as YAML; it doesn't report a
+  # missing block, which the awk above gates.
+  if ! name=$(yq --front-matter=extract '.name // ""' "$file" 2>&1) ||
+    ! description=$(yq --front-matter=extract '.description // ""' "$file" 2>&1); then
+    echo "$dir: SKILL.md frontmatter is not valid YAML" >&2
+    status=1
+    continue
+  fi
   if [[ $name != "$dir" ]]; then
     echo "$dir: frontmatter name is '$name', not '$dir'" >&2
     status=1
