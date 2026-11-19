@@ -35,11 +35,11 @@ nix run github:nhooey/data-skills#uninstall -- --scope=personal
 
 ## Dev shell
 
-`nix develop` installs the skills used to work on this repo, at project scope, into `<repo-root>/.agents/skills/`, with `.claude/skills` a symlink to it. The set comes from the `skills-devshell/` sub-flake: skillspkgs' [`authoring-with-git`](https://github.com/nhooey/skillspkgs) combination (nix, humanizer, skill-creation, superpowers and the whole git/GitHub pack), [`shell-skills`](https://github.com/nhooey/shell-skills), and three skills from [`coding-agent-skills`](https://github.com/nhooey/coding-agent-skills). The set is converged on shell entry: missing skills are installed, changed ones updated, and renamed or dropped ones swept.
+`nix develop` installs the skills used to work on this repo, at project scope, into `<repo-root>/.agents/skills/`, with `.claude/skills` a symlink to it. The set comes from the `skills-devshell/` sub-flake: skillspkgs' [`skill-collections`](https://github.com/nhooey/skillspkgs/blob/master/sources/combinations/families.nix) combination, the one shared by every skill collection, with no additions. The set is converged on shell entry: missing skills are installed, changed ones updated, and renamed or dropped ones swept.
 
 The shell's commands:
 
-- `check`: run `nix flake check`, which formats through treefmt, builds every skill, and checks each `SKILL.md`'s frontmatter `name` and `description`.
+- `check`: run `nix flake check`, which checks formatting through treefmt, builds every skill, checks each `SKILL.md`'s frontmatter `name` and `description`, and runs the bats tests under `tests/`.
 - `fmt`: format the tree with treefmt.
 - `skills-dev`: this repository's own tool, in [`scripts/skills-dev.sh`](scripts/skills-dev.sh). `skills-dev build` builds every skill, or the ones named; `skills-dev lint` checks each `SKILL.md`'s frontmatter; `skills-dev test` runs the bats tests under `tests/`. `skills-dev --help` lists its commands and options.
 - `update-flake`: update `flake.lock`.

@@ -76,6 +76,7 @@
               bats
               git
               gnused
+              yq-go
             ];
             text = builtins.readFile ./scripts/skills-dev.sh;
           };
@@ -87,7 +88,7 @@
           checks = {
             # Building the aggregate builds every skill package.
             skills = base.packages.${system}.agent-skills-nhooey-data-all;
-            skill-frontmatter = pkgs.runCommand "skill-frontmatter" { } ''
+            skill-frontmatter = pkgs.runCommand "skill-frontmatter" { nativeBuildInputs = [ pkgs.yq-go ]; } ''
               ${pkgs.bash}/bin/bash ${./checks/skill-frontmatter.sh} ${./skills}
               touch $out
             '';
@@ -95,7 +96,10 @@
             tests =
               pkgs.runCommand "tests"
                 {
-                  nativeBuildInputs = [ pkgs.bats ];
+                  nativeBuildInputs = [
+                    pkgs.bats
+                    pkgs.yq-go
+                  ];
                   SKILL_FRONTMATTER = ./checks/skill-frontmatter.sh;
                   SKILLS_DIR = ./skills;
                   SKILLS_DEV = pkgs.lib.getExe skills-dev;
